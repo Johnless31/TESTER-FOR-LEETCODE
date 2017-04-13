@@ -133,11 +133,117 @@ Node getMindiffSubarray(vector<int> nums) {
 	return targetNode;
 }
 
+/*
+用C/C++实现根据前序和中序遍历来重建二叉树 
+*/
+class Tnode{
+	public:
+		Tnode * left;
+		Tnode * right;
+		char data;
+		Tnode(char d) {
+			this->data = d;
+			this->left = NULL;
+			this->right = NULL;
+		}
+};
+class Tree{
+	public:
+		Tnode* root;
+		Tree() {
+			this->root = NULL;
+		}
+		Tree(Tnode* r) {
+			this->root = r;
+		}
+		virtual ~Tree() {
+			this->clean(this->root);
+		}
+		
+		void postOrderPrintTree() {
+			this->postordervisit(this->root);
+		}
+	
+		void reBuildTree(char* preStr, int pb, int pe, char* ordStr, int ob, int oe) {
+			if (pb > pe || ob > oe) {
+				return;
+			}
+			//cout<<preStr<<endl;
+			char target = preStr[pb];
+			this->root = (Tnode*)new Tnode(target);
+			//构建左子树 
+			int lob;
+			int len = 0;
+			for (lob = ob; ordStr[lob] != target; lob++);
+			if (lob > ob) {
+				len = lob - ob;
+				int lpb = pb;
+				bool isOk = false;
+				for (;;) {
+					char ch = preStr[lpb];
+					for (int z = ob; z < lob; z++) {
+						if (ch == ordStr[z]) {
+							isOk = true;
+							break;
+						}
+					}
+					if (isOk) {
+						break;
+					}
+					++lpb;
+				}
+				node->left = reBuildTree(preStr, lpb, lpb+len-1, ordStr, ob, lob-1); 
+			}
+			
+			//构建右子树
+			if (lob < oe) {
+				node->right = reBuildTree(preStr, pb+len+1, pe, ordStr, lob+1, oe);
+			}
+		}	
+	private:
+		void clean(Tnode* root) {
+			if (root == NULL) {
+				return;
+			}
+			if (root->left != NULL) {
+				clean(root->left);
+			}
+			if (root->right != NULL) {
+				clean(root->right);
+			}
+			delete root;
+		}
+		
+		void postordervisit(Tnode* r) {
+			if (r == NULL) {
+				return;
+			}
+			if (r->left != NULL) {
+				this->postordervisit(r->left);
+			}
+			if (r->right != NULL) {
+				this->postordervisit(r->right);
+			}
+			cout<<r->data<<" ";
+		}
+};
+/*
+char* preStr, int pb, int pe,先序字符序列，pb是开始index，pe是结束index 
+char* ordStr, int ob, int oe，后序字符序列，ob是开发index，oe是结束index 
+*/ 
 int main(){
-	int N[] = {1,3,5,2,17,10,18,30};
-	vector<int> vec(N, N+sizeof(N)/sizeof(int));
-	Node ret = getMindiffSubarray(vec);
-	for (int i = 0; i < ret.list.size(); i++) {
-		cout<<ret.list[i]<<endl;
-	} 
+	char preStr[] = {'a','b','d','c','e','f'};
+	char ordStr[] = {'d','b','a','e','c','f'};
+	//Tnode* tree = reBuildTree(preStr, 0, 5, ordStr, 0, 5);
+	Tree tree;
+	tree.reBuildTree(preStr, 0, 5, ordStr, 0, 5);
+	tree.postOrderPrintTree();
+	//cout<<(test->left==NULL)<<endl;
+
+//	int N[] = {1,3,5,2,17,10,18,30};
+//	vector<int> vec(N, N+sizeof(N)/sizeof(int));
+//	Node ret = getMindiffSubarray(vec);
+//	for (int i = 0; i < ret.list.size(); i++) {
+//		cout<<ret.list[i]<<endl;
+//	} 
 }
