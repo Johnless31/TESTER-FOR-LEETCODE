@@ -164,13 +164,47 @@ class Tree{
 			this->postordervisit(this->root);
 		}
 	
-		void reBuildTree(char* preStr, int pb, int pe, char* ordStr, int ob, int oe) {
-			if (pb > pe || ob > oe) {
+		void rebuild(char* preStr, int pb, int pe, char* ordStr, int ob, int oe) {
+			this->root = this->reBuildTree(preStr, pb, pe, ordStr, ob, oe);
+		}
+		
+		int printNodeAtLevel(int level) {
+			this->printNodeAtLevel(this->root, level);
+		}
+			
+	private:
+		void clean(Tnode* r) {
+			if (r == NULL) {
 				return;
 			}
-			//cout<<preStr<<endl;
+			if (r->left != NULL) {
+				clean(r->left);
+			}
+			if (r->right != NULL) {
+				clean(r->right);
+			}
+			delete r;
+		}
+		
+		void postordervisit(Tnode* r) {
+			if (r == NULL) {
+				return;
+			}
+			if (r->left != NULL) {
+				this->postordervisit(r->left);
+			}
+			if (r->right != NULL) {
+				this->postordervisit(r->right);
+			}
+			cout<<r->data<<" ";
+		}
+		
+		Tnode* reBuildTree(char* preStr, int pb, int pe, char* ordStr, int ob, int oe) {
+			if (pb > pe || ob > oe) {
+				return NULL;
+			}
 			char target = preStr[pb];
-			this->root = (Tnode*)new Tnode(target);
+			Tnode* node = (Tnode*)new Tnode(target);
 			//构建左子树 
 			int lob;
 			int len = 0;
@@ -199,32 +233,18 @@ class Tree{
 			if (lob < oe) {
 				node->right = reBuildTree(preStr, pb+len+1, pe, ordStr, lob+1, oe);
 			}
-		}	
-	private:
-		void clean(Tnode* root) {
-			if (root == NULL) {
-				return;
-			}
-			if (root->left != NULL) {
-				clean(root->left);
-			}
-			if (root->right != NULL) {
-				clean(root->right);
-			}
-			delete root;
+			return node;
 		}
 		
-		void postordervisit(Tnode* r) {
-			if (r == NULL) {
-				return;
+		int printNodeAtLevel(Tnode* root, int level) {
+			if (root == NULL || level < 0) {
+				return 0;
 			}
-			if (r->left != NULL) {
-				this->postordervisit(r->left);
+			if (level == 0) {
+				cout<<root->data<<" ";
+				return 1;
 			}
-			if (r->right != NULL) {
-				this->postordervisit(r->right);
-			}
-			cout<<r->data<<" ";
+			return printNodeAtLevel(root->left, level - 1) + printNodeAtLevel(root->right, level - 1); 
 		}
 };
 /*
@@ -234,12 +254,13 @@ char* ordStr, int ob, int oe，后序字符序列，ob是开发index，oe是结束index
 int main(){
 	char preStr[] = {'a','b','d','c','e','f'};
 	char ordStr[] = {'d','b','a','e','c','f'};
-	//Tnode* tree = reBuildTree(preStr, 0, 5, ordStr, 0, 5);
 	Tree tree;
-	tree.reBuildTree(preStr, 0, 5, ordStr, 0, 5);
+	tree.rebuild(preStr, 0, 5, ordStr, 0, 5);
 	tree.postOrderPrintTree();
-	//cout<<(test->left==NULL)<<endl;
-
+	cout<<endl;
+	int ret = tree.printNodeAtLevel(2);
+	cout<<endl;
+	cout<<ret<<endl;
 //	int N[] = {1,3,5,2,17,10,18,30};
 //	vector<int> vec(N, N+sizeof(N)/sizeof(int));
 //	Node ret = getMindiffSubarray(vec);
