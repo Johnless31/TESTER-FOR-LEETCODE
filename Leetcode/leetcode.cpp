@@ -4,21 +4,9 @@
 #include <stack>
 #include <map>
 #include <limits.h>
+#include <string>
 using namespace std;
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
-/*vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-	sort(candidates.begin(), candidates.end());
-	size_t len = candidates.size();
-	for (int i=0; i <len; i++) {
-		vector<int> set;
-		set.push_back(candidates[i]);
-		do {
-			
-		} while()
-	}
-	 
-	        
-}*/
+
 int searchInsert(vector<int>& nums, int target) {
 	int start = 0;
 	int end = nums.size();
@@ -38,7 +26,7 @@ int searchInsert(vector<int>& nums, int target) {
 		} else {
 			start = m + 1;
 		}
-		
+
 	} while (start <= end);
 	return nums[m] > target ? m : (m + 1);
 }
@@ -76,8 +64,8 @@ int maxSubArray(vector<int>& nums) {
 			p++;
 		while (nums[p] <= 0) p++;
 	}
-	
-	return ret;     
+
+	return ret;
 }
 void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
 	if (n == 0)
@@ -125,7 +113,7 @@ vector<vector<int> > generate(int numRows) {
 		ret.push_back(v);
 	}
 	return ret;
-	        
+
 }
 
 int findMaxConsecutiveOnes(vector<int>& nums) {
@@ -134,7 +122,7 @@ int findMaxConsecutiveOnes(vector<int>& nums) {
 	int tmp = 0;
 	for (int i = 0; i < l; i++) {
 		tmp = tmp * nums[i] + nums[i];
-		ret = max(tmp, ret);	
+		ret = max(tmp, ret);
 	}
 	return ret;
 }
@@ -155,7 +143,7 @@ int search(vector<int>& nums, int target) {
 		if (nums[r] > nums[r + 1])
 			break;
 	}
-	
+
 	int start, end;
 	if (target > nums[len - 1]) {
 		start = 0;
@@ -174,7 +162,7 @@ int search(vector<int>& nums, int target) {
 			start = m + 1;
 		}
 	}
-	return ret;      
+	return ret;
 }
 
 //
@@ -218,7 +206,7 @@ class Test1{
 			h = c.h;
 			w = c.w;
 		}
-		
+
 		int getH() {
 			return this->h;
 		}
@@ -249,7 +237,7 @@ struct TreeNode {
       TreeNode *right;
       TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  };
- 
+
 vector<int> inorderTraversal(TreeNode* root) {
 	vector<int> ret;
     if (root == NULL)
@@ -278,7 +266,7 @@ class Tree{
 	public:
 		TreeNode* root;
 		Tree() {
-			
+
 		}
 };
 
@@ -294,19 +282,9 @@ void IOTest()
 		for (int i = 0; i < N; i++)
 		cout<<arr[i]<<endl;
 	}
-	
-}
 
+}
 int main(int argc, char** argv) {
-	TreeNode* root = (TreeNode*)new TreeNode(0);
-	TreeNode* left1 = (TreeNode*)new TreeNode(1);
-	TreeNode* right1 = (TreeNode*)new TreeNode(2);
-	TreeNode* left2 = (TreeNode*)new TreeNode(3);
-	TreeNode* right2 = (TreeNode*)new TreeNode(4);
-	root->left = left1;
-	root->right = right1;
-	left1->left = left2;
-	left1->right = right2;
-	inorderTraversal(TreeNode* root)
+
 	return 0;
 }
