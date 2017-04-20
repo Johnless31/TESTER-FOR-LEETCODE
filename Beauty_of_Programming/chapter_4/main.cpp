@@ -265,6 +265,39 @@ private:
     }
 };
 
+class HeapSort{
+public:
+    heapSort(int arr[], int n) {
+        this->createHeap(arr, n);
+        int e = n - 1;
+        while(e > 0) {
+
+        }
+    }
+
+private:
+    void createHeap(int arr[], int n) {
+        for (int i = n/2-1; i <= 0; i--) {
+            this->fixUp(arr, n, i);
+        }
+    }
+    //最大堆调整
+    void fixUp(int arr[], int n, int i) {
+        if (i > (n - 1)) {
+          return;
+        }
+        while((i-1)/2 >= 0) {
+            int p = (i-1)/2;
+            if (arr[p] < arr[i]) {
+                arr[i] = arr[i] + arr[p];
+                arr[p] = arr[i] - arr[p];
+                arr[i] = arr[i] - arr[p];
+            }
+            i = p;
+        }
+    }
+};
+
 int main(){
     MergeSort ms;
     int arr[] = {5,3,1,6,7,9,34,78,11,22};
