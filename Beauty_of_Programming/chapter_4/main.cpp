@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <map>
 #include <stack>
+#include <string.h>
 using namespace std;
 class Tnode{
 	public:
@@ -264,13 +265,118 @@ private:
         }
     }
 };
+//现在要求实现如下接口函数(a+b=result)
+/*int AddBigNum(const char * a，const char* b， char* result，int len) {
+    int len_a = strlen(a);
+    int len_b = strlen(b);
+    int j = b -1;
+    int i = a - 1;
+    while(j >= 0 && i >= 0) {
 
-int main(){
-    MergeSort ms;
-    int arr[] = {5,3,1,6,7,9,34,78,11,22};
-    int len = sizeof(arr)/sizeof(int);
-    ms.mergeSort(arr, 0, len - 1);
-    for (int a = 0; a < len; a++)
-    cout<<arr[a]<<endl;
+    }
+}*/
+
+char itoc(int i) {
+    if (0 <= i && i <= 9) {
+        return '0' + i;
+    } else if (10 <= i && i <= 35) {
+        return 'a' + (i - 10);
+    } else if (36 <= i && i <= 61) {
+        return 'A' + (i - 36);
+    } else {
+        return -1;
+    }
+}
+int ctoi(char x) {
+    if ('0' <= x && x<= '9') {
+        return x - '0';
+    } else if ('a' <= x && x<= 'z') {
+        return (x - 'a') + 10;
+    } else if ('A' <= x && x<= 'Z') {
+        return (x - 'A') + 36;
+    } else {
+        return -1;
+    }
+}
+int AddBigNum(const char* a, const char* b, char* result, int len) {
+    int len_a = strlen(a);
+    int len_b = strlen(b);
+    if (len < len_a)
+        return -1;
+    int j = len_b -1;
+    int i = len_a - 1;
+    int max_len = max(len_a, len_b);
+    int ret_len = max_len+2;
+    int over = 0;
+    result[len-1] = '\0';
+    int r = len - 2;
+    while(j >= 0 && i >= 0) {
+        int tmp = ctoi(a[i]) + ctoi(b[j]);
+        if (over > 0) {
+            tmp = tmp + 1;
+            over = 0;
+        }
+        if (tmp > 62) {
+            over = 1;
+        }
+        int bit = tmp%62;
+        char relBit = itoc(bit);
+        result[r--] = relBit;
+        i--;
+        j--;
+    }
+    if (r <= 0 && over == 1) {
+            return -1;
+    }
+    if (r <= 0 && over == 1) {
+            return -1;
+    }
+    while(j >= 0) {
+        char c;
+        if (over > 0) {
+            int t = ctoi(b[j]) + 1;
+            if (t > 62) {
+                over = 1;
+            } else {
+                over = 0;
+            }
+            c = ctoi(t%62);
+        } else {
+            c = b[j];
+        }
+        j--;
+        if (r == 0 && over == 1) {
+            return -1;
+        }
+        result[r--] = c;
+    }
+    while(i >= 0) {
+        char c;
+        if (over > 0) {
+            int t = ctoi(a[i]) + 1;
+            if (t > 62) {
+                over = 1;
+            } else {
+                over = 0;
+            }
+            c = ctoi(t%62);
+        } else {
+            c = a[i];
+        }
+        i--;
+        if (r == 0 && over == 1) {
+            return -1;
+        }
+        result[r--] = c;
+    }
+
     return 0;
+}
+int main(){
+    int len = 9;
+    char* result = (char*) malloc (len);
+    char a[] = "Zabsdfsc";
+    char b[] = "dfsf34f";
+    cout<<AddBigNum(a, b, result, len)<<endl;
+    cout<<"result="<<result<<endl;
 }
