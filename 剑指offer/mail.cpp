@@ -35,9 +35,38 @@ public:
     }
 };
 
+class PrintNDigits {
+private:
+    char digit[10] = {'0', '1','2', '3','4', '5','6', '7','8', '9'};
+public:
+    void printN(int n, string s) {
+        n = n - 1;
+        if ( n <= -1) {
+            this->printNumber(s);
+            return;
+        }
+        for (int i = 0; i < 10; i++) {
+            string si =s + this->digit[i];
+            printN(n, si);
+        }
+    }
 
+    void printNumber(string num) {
+        bool zeroBit = true;
+        int len = num.size();
+        for (int i = 0; i < len; i++) {
+            if (zeroBit && num[i] != '0') {
+                zeroBit = false;
+            }
+            if (!zeroBit) {
+                cout<<num[i];
+            }
+        }
+        cout<<'\t';
+    }
+};
 int main(int argc, char* args[]) {
-    int arr[] = {5,7,7,7,9,5,6};
-    rotateArr r;
-    cout<<r.getMinInRoteArr(arr, sizeof(arr)/sizeof(int));
+    //int arr[] = {5,7,7,7,9,5,6};
+    PrintNDigits p;
+    p.printN(2,"");
 }
